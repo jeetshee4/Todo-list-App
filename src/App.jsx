@@ -15,7 +15,7 @@ function App() {
    const [todos, setTodos] = useState([])
 
    //Further Updation for the showfinished button to hide the finished todos
-   const [showfinished, setshowfinished] = useState(true)
+   const [showfinished, setshowfinished] = useState(false)
 
    
    useEffect(() => {
@@ -105,19 +105,20 @@ function App() {
       <>
          <Navbar />
          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-         <div className="container mx-auto my-5 bg-violet-100 rounded-xl p-5 min-h-[80vh]">
-            <div className="addTodo" value={todo.isCompleted}>
+         <div className="container mx-auto my-5 bg-violet-100 rounded-xl px-5 py-2 min-h-[80vh] md:w-1/2 w-[90vw]">
+          <h1 className='text-center text-xl font-bold  my-3'>taskBuddy-Your Own Personal Todo List App</h1>
+            <div className="addTodo w-full" value={todo.isCompleted}>
                <h2 className='text-lg font-bold'>
                   Add a Todo
                </h2>
-               <input onChange={handleChange} value={todo} className='bg-white py-1 px-3 w-80 rounded-lg border-black border-2' type="text" />
-               <button onClick={handleAdd} disabled={todo.length <= 3} className='hover:bg-violet-950 hover:cursor-pointer bg-violet-800 mx-6 rounded-md py-1 px-3 text-white'>Save</button>
+               <input onChange={handleChange} value={todo} className='bg-white py-1 px-3 w-full my-2 rounded-lg border-black border-2' type="text" />
+               <button onClick={handleAdd} disabled={todo.length <= 3} className='hover:bg-violet-950 hover:cursor-pointer bg-violet-800 rounded-md py-1 px-3 text-white w-full'>Save</button>
 
                {/* Here one noticable thing is that disabled={todo.length <= 3} is for stopping creating blank todos */}
             </div>
             <div className='flex gap-2 m-3'>
               <input type="checkbox" onChange={toggleFinished} checked={showfinished}/> 
-              <div>Show finihed</div>
+              <div>Show finished</div>
              
             </div>
 
@@ -129,14 +130,14 @@ function App() {
                </div>
                {todos.map((item) => {
 
-                  return (showfinished || !item.isCompleted) && <div key={item.id} className="todo flex justify-between w-1/4 my-2">
+                  return (showfinished || !item.isCompleted) && <div key={item.id} className="todo flex justify-between w-full my-2 px-3">
                      <div className="flex gap-5">
                         <input checked={item.isCompleted} name={item.id} onChange={handleCheckbox} type="checkbox" />
                         <div className={item.isCompleted ? "line-through" : ""}>
                            {item.todo}
                         </div>
                      </div>
-                     <div className="buttons flex gap-1 items-center mx-2">
+                     <div className="buttons flex gap-1 items-center">
                         <button onClick={(e) => { handleEdit(e, item.id) }} className='hover:bg-violet-950 flex items-center border-amber-50 border-2 hover:cursor-pointer edit bg-violet-800 text-white rounded-lg'><span className="material-symbols-outlined">
                            edit_square
                         </span></button>
