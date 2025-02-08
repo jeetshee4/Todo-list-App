@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
 import './App.css'
 import Navbar from './components/Navbar'
 import { v4 as uuidv4 } from 'uuid';
@@ -106,7 +106,7 @@ function App() {
          <Navbar />
          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
          <div className="container mx-auto my-5 bg-violet-100 rounded-xl px-5 py-2 min-h-[80vh] md:w-1/2 w-[90vw]">
-          <h1 className='text-center text-xl font-bold  my-3'>taskBuddy-Your Own Personal Todo List App</h1>
+          <h1 className='text-center text-xl font-bold my-3'>taskBuddy-Your Own Personal Todo List App</h1>
             <div className="addTodo w-full" value={todo.isCompleted}>
                <h2 className='text-lg font-bold'>
                   Add a Todo
