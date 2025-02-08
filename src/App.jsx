@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -8,26 +8,55 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 function App() {
-   const [count, setCount] = useState(0)
+
    //Now we will make an todo as a state(somthing like a variable) and initiate it
    const [todo, setTodo] = useState("")
    //Also we will intiatet the todos list to initiate the todo list.This todos is the todo list basically holding each todo.
    const [todos, setTodos] = useState([])
 
-   const handleAdd = () => {
+   useEffect(() => {
+      let todoString = localStorage.getItem("todos")
+      if (todoString) {
+         let todos = JSON.parse(localStorage.getItem("todos"))
+         setTodos(todos)
+
+      }
+   }, [])
+
+     const saveToLS =  (todos) => {
+     localStorage.setItem("todos", JSON.stringify(todos))
+    }
+
+
+
+
+
+   
+   
+
+
+
+   const handleAdd =  () => {
       // This is the Syntax to add some new object into the todo list [...todos , {new object}] means that the existing objects will remain as it is and additionally a new todo object will be pushed to that array
-      setTodos([...todos, { id: uuidv4(), todo, isCompleted: false }])
+      const newTodos = [...todos, { id: uuidv4(), todo, isCompleted: false }];
+      setTodos(newTodos);
       setTodo("") //This means that the setTodo is again blank
-      console.log(todos)
+      // console.log([...todos, { id: uuidv4(), todo, isCompleted: false }])
+       saveToLS(newTodos)
    }
 
 
 
    // Function to handle the edit functionality when the edit button is clicked 
    const handleEdit = (e, id) => {
-      let t= todos.filter(i=>i.id===id)
-      setTodo(t[0])
+      let t = todos.filter(i => i.id === id)
+      setTodo(t[0].todo)
 
+      //And we will delete the existing todo from the todos list
+      const newTodos = todos.filter(item => item.id !== id);
+      setTodos(newTodos);
+      
+      saveToLS(newTodos)
    }
 
    // Function to handle the delete functionality when the edit button is clicked
@@ -39,12 +68,10 @@ function App() {
       })
       console.log(todos)
       // It is like a comparator function with taked the comaparator function and according to the result value it finds the indices for which the id is same
-      let newTodos = todos.filter(item => {
-         return item.id !== id;
-      });
-      //Here the ids which are not matched are returned .So badsically ids who are matched are removed from the newTodos
+      const newTodos = todos.filter(item => item.id !== id);
       setTodos(newTodos);
-
+      
+      saveToLS(newTodos)
    }
 
    const handleChange = (e) => {
@@ -57,9 +84,12 @@ function App() {
          return index.id === id;
       })
 
-      let newTodos = [...todos]
-      newTodos[index].isCompleted = !newTodos[index].isCompleted
-      setTodos(newTodos)
+      const newTodos = [...todos];
+      newTodos[index].isCompleted = !newTodos[index].isCompleted;
+      setTodos(newTodos);
+      
+      saveToLS(newTodos)
+
    }
 
    return (
@@ -72,7 +102,7 @@ function App() {
                   Add a Todo
                </h2>
                <input onChange={handleChange} value={todo} className='bg-white py-1 px-3 w-80 rounded-lg border-black border-2' type="text" />
-               <button onClick={handleAdd} className='hover:bg-violet-950 hover:cursor-pointer bg-violet-800 mx-6 rounded-md py-1 px-3 text-white'>Add</button>
+               <button onClick={handleAdd} className='hover:bg-violet-950 hover:cursor-pointer bg-violet-800 mx-6 rounded-md py-1 px-3 text-white'>Save</button>
             </div>
 
             <h2 className='text-xl font-bold'>Your Todos</h2>
@@ -91,7 +121,7 @@ function App() {
                         </div>
                      </div>
                      <div className="buttons flex gap-1 items-center mx-2">
-                        <button onClick={(e)=>{handleEdit(e ,id)}} className='hover:bg-violet-950 flex items-center border-amber-50 border-2 hover:cursor-pointer edit bg-violet-800 text-white rounded-lg'><span className="material-symbols-outlined">
+                        <button onClick={(e) => { handleEdit(e, item.id) }} className='hover:bg-violet-950 flex items-center border-amber-50 border-2 hover:cursor-pointer edit bg-violet-800 text-white rounded-lg'><span className="material-symbols-outlined">
                            edit_square
                         </span></button>
                         <button onClick={(e) => { handleDelete(e, item.id) }} className='hover:bg-violet-950 flex items-center border-amber-50 border-2 hover:cursor-pointer delete bg-violet-800 text-white rounded-lg'><span className="material-symbols-outlined">
