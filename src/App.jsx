@@ -14,6 +14,10 @@ function App() {
    //Also we will intiatet the todos list to initiate the todo list.This todos is the todo list basically holding each todo.
    const [todos, setTodos] = useState([])
 
+   //Further Updation for the showfinished button to hide the finished todos
+   const [showfinished, setshowfinished] = useState(true)
+
+   
    useEffect(() => {
       let todoString = localStorage.getItem("todos")
       if (todoString) {
@@ -28,7 +32,10 @@ function App() {
     }
 
 
+    const toggleFinished =(e)=>{
+      setshowfinished(!showfinished)
 
+    }
 
 
    
@@ -92,6 +99,8 @@ function App() {
 
    }
 
+   
+
    return (
       <>
          <Navbar />
@@ -102,7 +111,14 @@ function App() {
                   Add a Todo
                </h2>
                <input onChange={handleChange} value={todo} className='bg-white py-1 px-3 w-80 rounded-lg border-black border-2' type="text" />
-               <button onClick={handleAdd} className='hover:bg-violet-950 hover:cursor-pointer bg-violet-800 mx-6 rounded-md py-1 px-3 text-white'>Save</button>
+               <button onClick={handleAdd} disabled={todo.length <= 3} className='hover:bg-violet-950 hover:cursor-pointer bg-violet-800 mx-6 rounded-md py-1 px-3 text-white'>Save</button>
+
+               {/* Here one noticable thing is that disabled={todo.length <= 3} is for stopping creating blank todos */}
+            </div>
+            <div className='flex gap-2 m-3'>
+              <input type="checkbox" onChange={toggleFinished} checked={showfinished}/> 
+              <div>Show finihed</div>
+             
             </div>
 
             <h2 className='text-xl font-bold'>Your Todos</h2>
@@ -113,9 +129,9 @@ function App() {
                </div>
                {todos.map((item) => {
 
-                  return <div key={item.id} className="todo flex justify-between w-1/4 my-2">
+                  return (showfinished || !item.isCompleted) && <div key={item.id} className="todo flex justify-between w-1/4 my-2">
                      <div className="flex gap-5">
-                        <input value={item.isCompleted} name={item.id} onChange={handleCheckbox} type="checkbox" />
+                        <input checked={item.isCompleted} name={item.id} onChange={handleCheckbox} type="checkbox" />
                         <div className={item.isCompleted ? "line-through" : ""}>
                            {item.todo}
                         </div>
